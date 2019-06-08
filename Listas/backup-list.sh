@@ -21,6 +21,19 @@
 #  
 #  
 
+1. First we export&save all members from distribution list called "dist_list1" to a text file:
+
+zmprov gdlm dist_list1@domain.com > distlist.txt 
+
+2. Then we move the file to the other server (using scp for example) and run:
+
+for i in `cat distlist.txt | egrep -v '#|members'`;do zmprov adlm dist_list2@domain.com $i;done 
+
+The above command imports all members from the "dist_list1" distribution list, into the "dist_list2" distribution list on the second server.
+
+
+
+
 # Criar as Listas
 
 

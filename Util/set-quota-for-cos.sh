@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-#  restore-cos.sh
-#
+#  set-quota-for-cos.sh
+#  
 #  Copyright 2019 Jose Carlos <jcr0ch4@gmail.com>
 #  
 #  This program is free software; you can redistribute it and/or modify
@@ -21,12 +21,11 @@
 #  
 #  
 
-# setAccountCos(sac) {name@domain|id} {cos-name|cos-id}
 
-for cos in `/bin/ls -1 /tmpdir/COS | tr " " "\n"`
-do
-	for i in `cat /tmpdir/COS/$cos`
-	do
-		zmprov sac $i $cos
-	done
+for i in $(zmprov gac|grep -v defaul|grep -v ^$)
+do 
+	cota=$(echo $i |awk -F "_" '{print $2}'|grep -v ^$)
+	valor=$( expr $cota \* 1024 \* 1024)
+	echo  "mc $i zimbraMailQuota $valor" >>/tmp/acerto_cos.txt
 done
+zmprov < /tmp/acerto_cos.txt 
